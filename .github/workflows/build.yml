@@ -11,14 +11,17 @@ jobs:
           distribution: 'microsoft'
       - name: rozpakuj
         run: |
+          ls
           mkdir p
-          unzip -q "$(ls *.zip | head -1)" -d p
+          unzip -q EasyBot-projekt-yarn-1.21.11.zip -d p
       - name: build
-        working-directory: p
         run: |
+          ls -R p | head -40
+          G=$(find p -name gradlew | head -1)
+          cd "$(dirname "$G")"
           chmod +x gradlew
           ./gradlew build
       - uses: actions/upload-artifact@v7
         with:
           name: Artifacts
-          path: p/build/libs/
+          path: p/**/build/libs/*.jar
